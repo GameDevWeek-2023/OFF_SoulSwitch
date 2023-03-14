@@ -1,12 +1,11 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement2D : MonoBehaviour
 {
-    [Header("Movement")]
+[Header("Movement")]
     [SerializeField] private float speed = 7;
     [SerializeField] private float airMultiplier = 0.5f;
     private Vector2 direction;
@@ -71,9 +70,7 @@ public class PlayerMovement : MonoBehaviour
     private void MovePlayer()
     {
         // calculate movement direction
-        var right = direction.x * transform.right;
-        var forward = direction.y * transform.forward;
-        var relativeDir = right + forward;
+        var relativeDir = Vector3.forward * direction.x;
 
         // on ground
         if(grounded)
@@ -108,5 +105,4 @@ public class PlayerMovement : MonoBehaviour
     {
         return (jumpCooldownLeft == 0);
     }
-
 }
