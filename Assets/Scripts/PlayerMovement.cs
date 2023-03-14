@@ -53,10 +53,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnMove(InputValue value)
     {
-        if (grounded)
-        {
-            direction = value.Get<Vector2>();
-        }
+        direction = value.Get<Vector2>();
     }
     
     private void OnJump()
