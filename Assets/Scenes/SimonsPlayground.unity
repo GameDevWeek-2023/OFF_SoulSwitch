@@ -57245,9 +57245,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1554407423}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe07c28b0d538f179990ffbcd957777d, type: 3}
+  m_Script: {fileID: 11500000, guid: 0379522945ca26c75a7177596edc28c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  movementMode: 1
   speed: 4
   airMultiplier: 0.5
   jumpForce: 7
@@ -70451,6 +70452,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0379522945ca26c75a7177596edc28c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  movementMode: 0
   speed: 4
   airMultiplier: 0.1
   jumpForce: 7
@@ -76207,7 +76209,7 @@ SphereCollider:
   m_GameObject: {fileID: 2044943062}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
