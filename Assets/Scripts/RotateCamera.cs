@@ -8,7 +8,7 @@ using UnityEngine.Serialization;
 public class RotateCamera : MonoBehaviour
 {
     [SerializeField] private Transform cam;
-    [SerializeField] private float speed;
+    [SerializeField] private float speed = 1;
 
     private float _angleY = 0;
 
