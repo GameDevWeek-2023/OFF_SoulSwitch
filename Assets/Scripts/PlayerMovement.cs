@@ -6,6 +6,8 @@ using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
+    [Header("General")] [SerializeField] private MovementMode movementMode;
+    
     [Header("Movement")]
     [SerializeField] private float speed = 7;
     [SerializeField] private float airMultiplier = 0.5f;
@@ -56,21 +58,30 @@ public class PlayerMovement : MonoBehaviour
         direction = value.Get<Vector2>();
     }
     
-    private void OnJump()
+    private void OnJump(InputValue value)
     {
-        if (grounded && JumpCooldownReady())
+        bool isBtnDown = value.Get<float>() == 1f;
+        if (isBtnDown && grounded && JumpCooldownReady())
         {
-            _rigidbody.AddForce(transform.up * jumpForce, ForceMode.Impulse);
             jumpCooldownLeft = jumpCooldown;
+            _rigidbody.AddForce(transform.up * jumpForce, ForceMode.Impulse);
         }
     }
 
     private void MovePlayer()
     {
         // calculate movement direction
-        var right = direction.x * transform.right;
-        var forward = direction.y * transform.forward;
-        var relativeDir = right + forward;
+        var relativeDir = Vector3.zero;
+        if (movementMode == MovementMode.Movement3D)
+        {
+            var right = direction.x * transform.right;
+            var forward = direction.y * transform.forward;
+            relativeDir = right + forward;
+        }
+        else
+        {
+            relativeDir = Vector3.forward * direction.x;
+        }
 
         // on ground
         if(grounded)
@@ -105,5 +116,6 @@ public class PlayerMovement : MonoBehaviour
     {
         return (jumpCooldownLeft == 0);
     }
-
 }
+
+public enum MovementMode{ Movement3D, Movement2D }
