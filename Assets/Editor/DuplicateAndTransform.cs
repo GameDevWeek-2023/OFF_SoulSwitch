@@ -4,9 +4,10 @@ using UnityEditor;
 public class DuplicateAndTransform : EditorWindow
 {
     int numberOfDuplicates = 0;
-    Vector3 additionalTransform = Vector3.zero;
-    bool rotateDuplicates = false;
-    bool groupDuplicates = false;
+    Vector3 additionalTransform;
+    bool rotateDuplicates = true;
+    bool groupDuplicates = true;
+    float rotationVariation = 2.0f;
 
     [MenuItem("Window/Duplicate and Transform")]
     static void Init()
@@ -23,14 +24,15 @@ public class DuplicateAndTransform : EditorWindow
         additionalTransform = EditorGUILayout.Vector3Field("Additional Transform:", additionalTransform);
         rotateDuplicates = EditorGUILayout.Toggle("Rotate Duplicates", rotateDuplicates);
         groupDuplicates = EditorGUILayout.Toggle("Group Duplicates", groupDuplicates);
+        rotationVariation = EditorGUILayout.FloatField("Rotation Variation:", rotationVariation);
 
         if (GUILayout.Button("Duplicate"))
         {
-            DuplicateObjects(numberOfDuplicates, additionalTransform, rotateDuplicates, groupDuplicates);
+            DuplicateObjects(numberOfDuplicates, additionalTransform, rotateDuplicates, groupDuplicates, rotationVariation);
         }
     }
 
-    void DuplicateObjects(int numberOfDuplicates, Vector3 additionalTransform, bool rotateDuplicates, bool groupDuplicates)
+    void DuplicateObjects(int numberOfDuplicates, Vector3 additionalTransform, bool rotateDuplicates, bool groupDuplicates, float rotationVariation)
     {
         // Get the selected game object
         GameObject selectedObject = Selection.activeGameObject;
@@ -54,12 +56,12 @@ public class DuplicateAndTransform : EditorWindow
                 duplicateObject.name = selectedObject.name + " " + i;
 
                 // Apply additional transform
-                duplicateObject.transform.position += additionalTransform;
+                duplicateObject.transform.position += additionalTransform * (i + 1);
 
-                // Add small variation of 2 degrees to the rotation
+                // Add small variation to the rotation
                 if (rotateDuplicates)
                 {
-                    float rotationY = 90f * (i + 1) + Random.Range(-4f, 4f);
+                    float rotationY = 90f * (i + 1) + Random.Range(-rotationVariation, rotationVariation);
                     duplicateObject.transform.Rotate(new Vector3(0f, rotationY, 0f));
                 }
 
@@ -70,7 +72,7 @@ public class DuplicateAndTransform : EditorWindow
                 }
 
                 // Place the duplicated game object next to the original game object
-                duplicateObject.transform.position = selectedObject.transform.position + new Vector3(i + 1, 0, 0);
+                //duplicateObject.transform.position = selectedObject.transform.position + new Vector3(i + 1, 0, 0);
             }
 
             // Group the duplicates under the parent game object
