@@ -13,6 +13,9 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float airMultiplier = 0.5f;
     private Vector2 direction;
     private Rigidbody _rigidbody;
+
+    [Header("2D Movement Direction")] 
+    [SerializeField] private int sideOfCube;
     
     [Header("Jump")]
     [SerializeField] private float jumpForce = 10;
@@ -80,7 +83,22 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-            relativeDir = Vector3.forward * direction.x;
+            sideOfCube %= 4;
+            switch (sideOfCube)
+            {
+                case 0:
+                    relativeDir = Vector3.forward * direction.x;
+                    break;
+                case 1:
+                    relativeDir = Vector3.right * direction.x;
+                    break;
+                case 2:
+                    relativeDir = Vector3.back * direction.x;
+                    break;
+                case 3:
+                    relativeDir = Vector3.left * direction.x;
+                    break;
+            }
         }
 
         // on ground
