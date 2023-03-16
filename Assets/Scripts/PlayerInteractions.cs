@@ -1,26 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class PlayerInteractions : MonoBehaviour
 {
 
-    [SerializeField] private Transform camera;
+    [FormerlySerializedAs("camera")] [SerializeField] private Transform cam;
     [SerializeField] private float activateDistance;
     [SerializeField] private ActivationMethod activationMethod;
 
-    private bool active = false;
+    private bool _active = false;
 
     private void OnInteract()
     {
         Debug.Log("It works");
         RaycastHit hit;
-        active = Physics.Raycast(camera.position, camera.TransformDirection(Vector3.forward), out hit,
+        _active = Physics.Raycast(cam.position, cam.TransformDirection(Vector3.forward), out hit,
             activateDistance);
         
         Debug.Log(hit);
 
-        if (active && hit.transform.GetComponent<Animator>() != null)
+        if (_active && hit.transform.GetComponent<Animator>() != null)
         {
             Debug.Log("Adding Trigger");
             hit.transform.GetComponent<Animator>().SetTrigger("activate");
