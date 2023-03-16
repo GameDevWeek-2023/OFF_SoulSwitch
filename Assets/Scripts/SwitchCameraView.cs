@@ -6,8 +6,13 @@ using UnityEngine.InputSystem;
 
 public class SwitchCameraView : MonoBehaviour
 {
+    [Header("Cameras")]
+    [SerializeField] private Transform firstPersonCamHolder;
     [SerializeField] private GameObject firstPersonCam;
+    [SerializeField] private Transform thirdPersonCamHolder;
     [SerializeField] private GameObject thirdPersonCam;
+    
+    [Header("Inputs")]
     [SerializeField] private PlayerInput firstPersonInput;
     [SerializeField] private PlayerInput thirdPersonInput;
     
@@ -31,7 +36,6 @@ public class SwitchCameraView : MonoBehaviour
     {
         firstPersonCam.SetActive(true);
         thirdPersonCam.SetActive(false);
-
         firstPersonInput.enabled = true;
         thirdPersonInput.enabled = false;
     }
@@ -51,21 +55,21 @@ public class SwitchCameraView : MonoBehaviour
         {
             movingCam = firstPersonCam;
             
-            startPosition = firstPersonCam.transform.position;
-            endPosition = thirdPersonCam.transform.position;
+            startPosition = firstPersonCamHolder.position;
+            endPosition = thirdPersonCamHolder.position;
 
-            startRotation = firstPersonCam.transform.rotation;
-            endRotation = thirdPersonCam.transform.rotation;
+            startRotation = firstPersonCamHolder.rotation;
+            endRotation = thirdPersonCamHolder.rotation;
         }
         else
         {
             movingCam = thirdPersonCam;
             
-            startPosition = thirdPersonCam.transform.position;
-            endPosition = firstPersonCam.transform.position;
+            startPosition = thirdPersonCamHolder.position;
+            endPosition = firstPersonCamHolder.position;
 
-            startRotation = thirdPersonCam.transform.rotation;
-            endRotation = firstPersonCam.transform.rotation;
+            startRotation = thirdPersonCamHolder.rotation;
+            endRotation = firstPersonCamHolder.rotation;
         }
 
         journeyLength = Vector3.Distance(startPosition, endPosition);
@@ -99,12 +103,14 @@ public class SwitchCameraView : MonoBehaviour
     private void finishTransition()
     {
         isCameraMoving = false;
-        movingCam.transform.position = startPosition;
-        movingCam.transform.rotation = startRotation;
+        Transform returnTransform;
+        
         
         if (_isFirstPerson) {
             firstPersonCam.SetActive(false);
             thirdPersonCam.SetActive(true);
+
+            returnTransform = firstPersonCamHolder;
             
             thirdPersonInput.enabled = true;
         }
@@ -112,9 +118,14 @@ public class SwitchCameraView : MonoBehaviour
         {
             firstPersonCam.SetActive(true);
             thirdPersonCam.SetActive(false);
+
+            returnTransform = thirdPersonCamHolder;
             
             firstPersonInput.enabled = true;
         }
+        
+        movingCam.transform.position = returnTransform.position;
+        movingCam.transform.rotation = returnTransform.rotation;
 
         _isFirstPerson = !_isFirstPerson;
         _playerInput.enabled = true;
